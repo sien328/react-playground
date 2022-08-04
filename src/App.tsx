@@ -1,4 +1,5 @@
 import Header from './header/header';
+import Monster from './monster rolodex/monster';
 import './App.css';
 
 function App() {
@@ -6,6 +7,7 @@ function App() {
     <div className="App">
       <header className="App-header">
         <Header/>
+        <Monster/>
       </header>
     </div>
   );
