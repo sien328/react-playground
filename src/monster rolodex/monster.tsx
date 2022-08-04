@@ -5,13 +5,12 @@ interface IProps {
 }
 
 interface IMonster {
-    id?: String;
-    name?: String;
+    id?: string;
+    name?: string;
 }
 
 interface IState {
-    search: String;
-    originalMonsters: Array<IMonster>
+    search: string;
     monsters: Array<IMonster>;
 }
 
@@ -20,7 +19,6 @@ class Monster extends Component<IProps, IState> {
         super(props);
         this.state = {
             search: '',
-            originalMonsters: [],
             monsters: [],
         }
     };
@@ -32,40 +30,43 @@ class Monster extends Component<IProps, IState> {
     // 4. When this.state updates render runs again - update UI
 
     componentDidMount(): void {
-        let getMonsters = () =>{
+        const getMonsters = () =>{
             fetch('https://jsonplaceholder.typicode.com/users')
             .then((res)=> res.json())
             .then((users)=> this.setState(
-                    ()=> {return {originalMonsters: users, monsters: users}}, 
+                    ()=> {return {monsters: users}}, 
                     ()=> {console.log("getMonster:",this.state)}
                 ))
         }
         getMonsters();
     }
 
-    searchChange = (e:any): void => {
+    onSearchChange = (e:any): void => {
         let searchValue = e.target.value.toLowerCase();
-        const matching = this.state.originalMonsters.filter(monster => {
-            let name = monster.name!.toLowerCase();
-            if(name.includes(searchValue)) {
-                return true;
-            }
-        });
-   
-        this.setState({search: searchValue, monsters: matching});
+        this.setState({search: searchValue});
     }
 
     render() {
+        const {search, monsters} = this.state;
+        const {onSearchChange} = this;
+
+        const matchingMonsters = monsters.filter(monster => {
+            let name = monster.name!.toLowerCase();
+            if(name.includes(search as string)) {
+                return true;
+            }
+        });
+
         return (
             <div className="page">
                 <input className='search-box' 
                     type='search' 
-                    value={this.state.search as string } 
+                    value={search as string } 
                     placeholder='Search Monsters'
-                    onChange={this.searchChange}
+                    onChange={onSearchChange}
                     />
                 { 
-                    this.state.monsters.map((monster)=>{
+                    matchingMonsters.map((monster)=>{
                         return <h1 className="monster" key={monster.id as string} >{monster.name}</h1>
                     })  
                 }  
