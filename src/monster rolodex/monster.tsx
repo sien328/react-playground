@@ -1,21 +1,23 @@
 import './monster.css';
 import { Component } from 'react';
+import CardList from '../components/card-list/card-list.component';
+import Search from '../components/search/search.component';
 
-interface IProps {
+interface Props {
 }
 
-interface IMonster {
+interface Monster {
     id?: string;
     name?: string;
 }
 
-interface IState {
+interface State {
     search: string;
-    monsters: Array<IMonster>;
+    monsters: Array<Monster>;
 }
 
-class Monster extends Component<IProps, IState> {
-    constructor(props: IProps) {
+class Monster extends Component<Props, State> {
+    constructor(props: Props) {
         super(props);
         this.state = {
             search: '',
@@ -24,9 +26,9 @@ class Monster extends Component<IProps, IState> {
     };
 
     // Life Cycle of Component - what runs first
-    // 1. Constructor
-    // 2. Render
-    // 3. Component Did Mount
+    // 1. Constructor - set initial state 
+    // 2. Render - build UI
+    // 3. Component Did Mount - get data 
     // 4. When this.state updates render runs again - update UI
 
     componentDidMount(): void {
@@ -59,17 +61,9 @@ class Monster extends Component<IProps, IState> {
 
         return (
             <div className="page">
-                <input className='search-box' 
-                    type='search' 
-                    value={search as string } 
-                    placeholder='Search Monsters'
-                    onChange={onSearchChange}
-                    />
-                { 
-                    matchingMonsters.map((monster)=>{
-                        return <h1 className="monster" key={monster.id as string} >{monster.name}</h1>
-                    })  
-                }  
+                <h1 className='page-title'> Monsters Rolodex</h1>
+                <Search className={'search-box'} change={onSearchChange} search={search}  placeholder={'Search Monsters'}/>
+                <CardList monsters={matchingMonsters} />
             </div>
         );
     };

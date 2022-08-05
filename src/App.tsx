@@ -1,8 +1,8 @@
-import Header from './header/header';
+import Header from './components/header/header.component';
 import Monster from './monster rolodex/monster';
 import './App.css';
 
-function App() {
+const App = () => {
   return (
     <div className="App">
       <header className="App-header">
